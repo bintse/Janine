@@ -8,6 +8,8 @@
 <form action="greeting" method="POST">
     Names:
     <input type="text" name="user"/><br>
+    Password:
+    <input type="password" name="password"/><br>
     <input type="submit" value="submit"/>
 </form>
 <!--use include to include another ftl file content in this file.-->
