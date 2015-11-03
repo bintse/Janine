@@ -3,13 +3,14 @@ package com.janine.control;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.janine.entity.User;
@@ -26,11 +27,15 @@ public class LoginControl {
         return "welcome";
     }
 
+    
     @RequestMapping(value = "/greeting", method = RequestMethod.POST)
-    public ModelAndView greeting(@RequestParam("username") String username,@ModelAttribute("user") User user) {
-    	System.out.println("======user=====>" + username);
+    public ModelAndView greeting(@ModelAttribute("form") User user,HttpServletRequest request) { 
+    	System.out.println("======user=====>" + user.getUsername());
     	System.out.println("======user=====>" + user.getPassword());
-        List<String> userList = Arrays.asList(username.split("-"));
+    	
+    	String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);  
+    	System.out.println("=====code===>" + kaptchaExpected);
+        List<String> userList = Arrays.asList(user.getUsername().split("-"));
         ModelAndView result = new ModelAndView("welcome");
         //userList is the variable name, used in ftl file.
         result.addObject("userList", userList);
@@ -39,7 +44,7 @@ public class LoginControl {
 
     @RequestMapping("/login")
     public String login() {
-    	 System.out.println("===================>");
+    	System.out.println("===================>");
         return "login";
     }
 }
