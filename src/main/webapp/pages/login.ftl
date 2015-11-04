@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as spring/>
 <html>
 <head>
-    <title>login the system by your account</title>
+    <title>login</title>
     <#--
     <link rel="stylesheet" type="text/css" href="<@s.url '/css/default.css'/>"/>-->
     <script type="text/javascript" src="<@spring.url '/js/jquery-2.1.4.min.js'/>"></script>     
@@ -18,7 +18,6 @@
 		    }  
 		};  
 		function changeCode() {  //刷新
-			alert($('#kaptchaImage'));
 		    $('#kaptchaImage').hide().attr('src', 'code/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();  
 		    event.cancelBubble=true;  
 		}
@@ -36,17 +35,14 @@
 	                //contentType: "application/json",  
                 	dataType: "json",  
 	                success:function(data){
-	                	alert("===>" + data);
-	                    if(data==true) {
+	                    if(data.data=='true') {
 	                   
-	 
-	                     //alert("输入正确 ！");
 	                    }else {
 	                        alert("请输入正确的验证码！");
 	                    }
 	                },
 	                error:function(e){
-	                    alert("---->" + e);
+	                    alert(e);
 	                }
 	            });
         	}

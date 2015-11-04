@@ -1,6 +1,7 @@
 package com.janine.control;
 
 import java.awt.image.BufferedImage;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -32,16 +33,13 @@ public class CaptchaController {
 		HttpSession session = request.getSession();
 		String code = (String) session.getAttribute(Constants.KAPTCHA_SESSION_KEY);
 		System.out.println("验证码: " + code);
-
 		response.setDateHeader("Expires", 0);
 		response.setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
 		response.addHeader("Cache-Control", "post-check=0, pre-check=0");
 		response.setHeader("Pragma", "no-cache");
 		response.setContentType("image/jpeg");
-
 		String capText = captchaProducer.createText();
 		session.setAttribute(Constants.KAPTCHA_SESSION_KEY, capText);
-
 		BufferedImage bi = captchaProducer.createImage(capText);
 		ServletOutputStream out = response.getOutputStream();
 		ImageIO.write(bi, "jpg", out);
@@ -55,19 +53,26 @@ public class CaptchaController {
 	
 	@RequestMapping(value = "code/captcha-code", method = RequestMethod.POST)
 	@ResponseBody
-	public Map<String, String> getKaptchaCode(@RequestParam("verifyCode") String verifyCode,HttpServletRequest request,HttpServletResponse response){
-		response.setContentType("application/json");
-		System.out.println("------->" + verifyCode);
+	public void getKaptchaCode(@RequestParam("verifyCode") String verifyCode,HttpServletRequest request,HttpServletResponse response){
+		response.setContentType("application/json; charset=UTF-8");
+		System.out.println("-----verifyCode-------->" + verifyCode);
 		String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);
-		System.out.println("=====code111===>" + kaptchaExpected);
-		Map<String, String> map = new HashMap<String, String>(1);
-		if(verifyCode.equals(kaptchaExpected)){
-			System.out.println("正确");
-			map.put("data", "true");
-		} else {
-			System.out.println("错误");
-			map.put("data", "false");
+		System.out.println("=====kaptchaExpected===>" + kaptchaExpected);
+		String msg = "";
+		try {
+			PrintWriter out = response.getWriter();
+			if(verifyCode.equals(kaptchaExpected)){
+				System.out.println("正确");
+				msg = "{\"data\":\"true\"}";
+			} else {
+				System.out.println("错误");
+				msg = "{\"data\":\"false\"}";
+			}
+			out.write(msg);
+			out.flush();
+			out.close();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-	    return map;
 	}
 }
