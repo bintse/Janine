@@ -36,7 +36,7 @@
 	<!-- 通过AOP配置提供事务增强，让service包下所有Bean的所有方法拥有事务 -->
 	<aop:config proxy-target-class="true">
 		<aop:pointcut id="serviceMethod"
-			expression=" execution(* com.smart.service..*(..))" />
+			expression=" execution(* com.janine.service..*(..))" />
 		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />
 	</aop:config>
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -45,6 +45,7 @@
 		</tx:attributes>
 	</tx:advice>
 	
+	<!-- 验证码 -->
 	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
         <property name="config">  
             <bean class="com.google.code.kaptcha.util.Config">  

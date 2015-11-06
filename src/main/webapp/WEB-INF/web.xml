@@ -5,6 +5,7 @@
 <web-app>
 	<display-name>Archetype Created Web Application</display-name>
 
+	<!-- spring context -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>classpath:applicationContext.xml</param-value>
@@ -14,6 +15,7 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<!-- spring mvc -->
 	<servlet>
 		<servlet-name>springmvc</servlet-name>
 		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -21,7 +23,7 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>classpath:springmvc-servlet.xml</param-value>
 		</init-param>
-		<load-on-startup>1</load-on-startup>
+		<load-on-startup>2</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
@@ -29,7 +31,20 @@
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
 
+	<!-- log4j -->
+	<context-param>
+		<param-name>log4jConfigLocation</param-name>
+		<!-- log4j配置文件路径 -->
+		<param-value>classpath:log4j.properties</param-value>
+	</context-param>
 
+	<listener>
+		<!-- 容器初始化（销毁）时开启（关闭）Log4j -->
+		<listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
+	</listener>
+
+
+	<!-- Kaptcha 验证码 -->
 	<servlet>
 		<servlet-name>Kaptcha</servlet-name>
 		<servlet-class>com.google.code.kaptcha.servlet.KaptchaServlet</servlet-class>

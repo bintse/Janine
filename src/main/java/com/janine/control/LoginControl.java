@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,10 +16,13 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.janine.entity.User;
 
+
 @Controller
 //@RequestMapping("/login")
 public class LoginControl {
-
+	
+	private static Logger loger = Logger.getLogger(LoginControl.class);
+	
     @RequestMapping(value = "/greeting/{user}", method = RequestMethod.GET)
     public String greeting(@PathVariable String user, Model model) {
         List<String> userList = Arrays.asList(user.split("-"));
@@ -32,6 +36,7 @@ public class LoginControl {
     public ModelAndView greeting(@ModelAttribute("form") User user,HttpServletRequest request) { 
     	System.out.println("======user=====>" + user.getUsername());
     	System.out.println("======user=====>" + user.getPassword());
+    	loger.info("======user=====>" + user.getPassword());
     	
     	String kaptchaExpected = (String) request.getSession().getAttribute(com.google.code.kaptcha.Constants.KAPTCHA_SESSION_KEY);  
     	System.out.println("=====code===>" + kaptchaExpected);
@@ -44,7 +49,6 @@ public class LoginControl {
 
     @RequestMapping("/login")
     public String login() {
-    	System.out.println("===================>");
         return "login";
     }
 }
