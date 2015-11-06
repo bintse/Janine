@@ -1,7 +1,7 @@
 <#import "/spring.ftl" as spring/>
 <html>
 <head>
-    <title>login the system by your account</title>
+    <title>login</title>
     <#--
     <link rel="stylesheet" type="text/css" href="<@s.url '/css/default.css'/>"/>-->
     <script type="text/javascript" src="<@spring.url '/js/jquery-2.1.4.min.js'/>"></script>     
@@ -18,7 +18,6 @@
 		    }  
 		};  
 		function changeCode() {  //刷新
-			alert($('#kaptchaImage'));
 		    $('#kaptchaImage').hide().attr('src', 'code/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();  
 		    event.cancelBubble=true;  
 		}
@@ -36,17 +35,14 @@
 	                //contentType: "application/json",  
                 	dataType: "json",  
 	                success:function(data){
-	                	alert("===>" + data);
-	                    if(data==true) {
-	                   
-	 
-	                     //alert("输入正确 ！");
+	                   if(data.data=='true') {
+	                   		$("#tip").attr("src","<@spring.url '/images/yes.png'/>");
 	                    }else {
-	                        alert("请输入正确的验证码！");
+	                        $("#tip").attr("src","<@spring.url '/images/no.png'/>");
 	                    }
 	                },
 	                error:function(e){
-	                    alert("---->" + e);
+	                    alert(e);
 	                }
 	            });
         	}
@@ -60,28 +56,22 @@
 		<tr>
 			<td>Names:</td>
 			<td><input type="text" name="username"/></td>
+			<td>&nbsp;</td>
 		</tr>
 		<tr>
 			<td>Password:</td>
 			<td><input type="password" name="password"/></td>
+			<td>&nbsp;</td>
 		</tr>
-		<tr>
-			<td>验证码 :</td>
-			<td><input name="j_code" type="text" id="kaptcha" maxlength="4" class="form-control" onblur="changeVerifyCode()" />
-				<img src="code/captcha-image" id="kaptchaImage"  style="margin-bottom: -3px"/>
-	   			<a href="#" onclick="changeCode()">看不清?换一张</a></td>
+		<tr height="45px">
+			<td valign="top">验证码 :</td>
+			<td valign="top"><input name="j_code" type="text" id="kaptcha" maxlength="4" class="form-control" onblur="changeVerifyCode()" /></td>
+	   		<td valign="top"><a href="#" onclick="changeCode()">
+					<img src="code/captcha-image" id="kaptchaImage"  style="margin-bottom: -3px" alt="换一张"/></a><img id="tip" src=""/></td>
 		</tr>
 	</table>
-    
     <br>
-    
     <br>
-	<div class="form-group">  
-	   <label></label> 
-	   
-	   
-	    <br/>  
-	</div>
     <input type="submit" value="submit"/>
 </form>
 
