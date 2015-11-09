@@ -19,7 +19,7 @@
 		};  
 		function changeCode() {  //刷新
 		    $('#kaptchaImage').hide().attr('src', 'code/captcha-image?' + Math.floor(Math.random()*100) ).fadeIn();  
-		    event.cancelBubble=true;  
+		    event.cancelBubble=true; 
 		}
 		function changeVerifyCode(){
      		var verifyCodeValue = $("#kaptcha").val();
