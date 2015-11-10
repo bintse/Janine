@@ -84,3 +84,87 @@
         </property>  
     </bean>
 </beans>
+=======
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+       http://www.springframework.org/schema/context 
+       http://www.springframework.org/schema/context/spring-context-3.1.xsd
+       http://www.springframework.org/schema/tx 
+       http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop-3.1.xsd">
+    
+    <!-- 扫描类包，将标注Spring注解的类自动转化Bean，同时完成Bean的注入 -->
+    <context:component-scan base-package="com.janine.dao"/>
+    <context:component-scan base-package="com.janine.service"/>
+    
+    <!-- 配置数据源 -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+		destroy-method="close" 
+		p:driverClassName="com.mysql.jdbc.Driver"
+		p:url="jdbc:mysql://localhost:3307/sampledb?characterEncoding=UTF-8"
+		p:username="root"
+		p:password="" />
+
+	<!-- 配置Jdbc模板  -->
+	<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"
+		p:dataSource-ref="dataSource" />
+		
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
+		p:dataSource-ref="dataSource" />
+		
+	<!-- 通过AOP配置提供事务增强，让service包下所有Bean的所有方法拥有事务 -->
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="serviceMethod"
+			expression=" execution(* com.janine.service..*(..))" />
+		<aop:advisor pointcut-ref="serviceMethod" advice-ref="txAdvice" />
+	</aop:config>
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="*" />
+		</tx:attributes>
+	</tx:advice>
+	
+	<!-- 验证码 -->
+	<bean id="captchaProducer" class="com.google.code.kaptcha.impl.DefaultKaptcha">  
+        <property name="config">  
+            <bean class="com.google.code.kaptcha.util.Config">  
+                <constructor-arg>  
+                    <props>  
+	                    <!-- 验证码宽度 -->  
+	                    <prop key="kaptcha.image.width">100</prop>   
+	                    <!-- 验证码高度 -->  
+	                    <prop key="kaptcha.image.height">40</prop>  
+	                    <!-- 生成验证码内容范围 -->  
+	                    <prop key="kaptcha.textproducer.char.string">0123456789</prop>  
+	                    <!-- 验证码个数 -->  
+	                    <prop key="kaptcha.textproducer.char.length">4</prop>  
+	                    <!-- 是否有边框 -->  
+	                    <prop key="kaptcha.border">yes</prop>  
+	                    <!-- 边框颜色 -->  
+	                    <prop key="kaptcha.border.color">105,179,90</prop>  
+	                    <!-- 边框厚度 -->  
+	                    <prop key="kaptcha.border.thickness">1</prop>  
+	                    <!-- 验证码字体颜色 -->  
+	                    <prop key="kaptcha.textproducer.font.color">red</prop>  
+	                    <!-- 验证码字体大小 -->  
+	                    <prop key="kaptcha.textproducer.font.size">35</prop>  
+	                    <!-- 验证码所属字体样式 -->  
+	                    <prop key="kaptcha.textproducer.font.names">BKamrnBd</prop>  
+	                       <!-- 干扰线颜色 -->  
+	                    <prop key="kaptcha.noise.color">blue</prop>  
+	                    <!-- 验证码文本字符间距 -->  
+	                    <prop key="kaptcha.textproducer.char.space">4</prop>   
+                    </props>  
+                </constructor-arg>  
+            </bean>  
+        </property>  
+    </bean>
+</beans>

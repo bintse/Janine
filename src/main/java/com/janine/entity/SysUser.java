@@ -1,9 +1,11 @@
 package com.janine.entity;
 
-public class User {
+public class SysUser {
 
+	private int id;
 	private String username;
 	private String password;
+	private String tel;
 
 	public String getUsername() {
 		return username;
@@ -20,5 +22,23 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getTel() {
+		return tel;
+	}
+
+	public void setTel(String tel) {
+		this.tel = tel;
+	}
+	
+	
 
 }
