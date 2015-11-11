@@ -16,9 +16,10 @@
     <context:component-scan base-package="com.janine.dao"/>
     <context:component-scan base-package="com.janine.service"/>
     
+    <!-- 通过配置文件配置数据源  -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
     
-    <!-- 配置数据源 -->
+    <!-- 配置数据源-->
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
 		destroy-method="close">
 		<property name="driverClassName" value="${mysql.jdbc.driver}"/>
