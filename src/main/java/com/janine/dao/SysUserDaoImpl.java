@@ -1,16 +1,14 @@
 package com.janine.dao;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowCallbackHandler;
-import org.springframework.jdbc.core.simple.ParameterizedRowMapper;
 import org.springframework.jdbc.core.support.JdbcDaoSupport;
 import org.springframework.stereotype.Component;
 
@@ -21,8 +19,13 @@ public class SysUserDaoImpl extends JdbcDaoSupport implements SysUserDao {
 	
 	private static Logger logger = Logger.getLogger(SysUserDaoImpl.class);
 
-	/*@Autowired
-	private JdbcTemplate jdbcTemplate;*/
+	@Autowired
+	private DataSource dataSource;
+
+	@PostConstruct
+	private void initialize() {
+		setDataSource(dataSource);
+	}
 	
 	
 	@Override

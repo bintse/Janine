@@ -24,7 +24,7 @@
 		destroy-method="close">
 		<property name="driverClassName" value="${mysql.jdbc.driver}"/>
 		<property name="url" value="${mysql.jdbc.url}"/>
-		<property name="username" value="${mysql.jdbc.username}"/>
+		<property name="username" value="${mysql.jdbc.name}"/>
 		<property name="password" value="${mysql.jdbc.password}"/>
 	</bean>	
 
